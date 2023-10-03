@@ -7,5 +7,35 @@ date: "10-04-2023"
 
 ## Problem 1: FiveThirtyEight Data Cleaning
 
+Begin by importing necessary libraries:
+```{r}
+library(tidyverse)
+library(readxl)
+library(haven)
+```
+
+Task 1: Reading in and Cleaning Monthly Political Datasheet
+Separating Date into 3 separate columns.
+```{r}
+
+months_df =
+  tibble(
+    month_num = 1:12,
+    month_abb = month.abb,
+    month = month.name
+  )
+months_df
+
+pols_df = read_csv("538_Data/pols-month.csv") |> 
+  janitor::clean_names() |> 
+  separate(col = mon,
+           into = c("year", "month", "day"),
+           sep = "-", 
+           convert = TRUE) |> 
+  
+
+pols_df
+
+```
 
 
