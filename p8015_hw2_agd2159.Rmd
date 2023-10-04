@@ -96,12 +96,12 @@ mrtrashwheel = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xl
 professortrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
                              sheet = 2, range = "A2:M108")
 
-gywndatrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
+gwyndatrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
                              sheet = 4, range = "A2:L158")
 
 
 ```
-Professortrash and Gywnda do not contain a variable column counting the "Sports Ball" category of trash collected, as Mr Trashwheel does. Gywnda also lacks a column on Glass Bottles collected, and a significant portion of Wrappers column is "NA." Since MrTrashwheel has both the largest amount of data and the most thorough reporting across its columns, I believe it will be best to clean the data to fit a lot of the standards that MrTrashwheel provides before joining. 
+Professortrash and Gwynda do not contain a variable column counting the "Sports Ball" category of trash collected, as Mr Trashwheel does. Gwynda also lacks a column on Glass Bottles collected, and a significant portion of Wrappers column is "NA." Since MrTrashwheel has both the largest amount of data and the most thorough reporting across its columns, I believe it will be best to clean the data to fit a lot of the standards that MrTrashwheel provides before joining. 
 
 *Task 1*
 Starting by cleaning `mrtrashwheel` dataframe. Adding Identifying Trashwheel Column that can serve as a joining key for `bindrows()` function.
@@ -120,9 +120,19 @@ mrtrashwheel = mrtrashwheel |>
 ```
 
 *Task 2*
-These tidying functions are replicated on the Professor and Gywnda datasets, which both already had the Year Column as a numeric value. 
+These tidying functions are replicated on the Professor and Gwynda datasets, which both already had the Year Column as a numeric value. 
 
-```{r}
+```{r remaining 2 tidy}
+
+professortrash = professortrash |> 
+  mutate(WheelID=c("ProfTrashwheel"),.before=Dumpster) |> 
+  rename("Homes_Powered" = "Homes Powered*", "Wt_tons" = "Weight (tons)") |> 
+  mutate(Homes_Powered = ((Wt_tons*500)/30))
+
+gwyndatrash = gwyndatrash |> 
+  mutate(WheelID=c("GwyndaTrashwheel"),.before=Dumpster) |> 
+  rename("Homes_Powered" = "Homes Powered*", "Wt_tons" = "Weight (tons)") |> 
+  mutate(Homes_Powered = ((Wt_tons*500)/30))
 
 ```
 
