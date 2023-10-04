@@ -103,8 +103,9 @@ gwyndatrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xls
 ```
 Professortrash and Gwynda do not contain a variable column counting the "Sports Ball" category of trash collected, as Mr Trashwheel does. Gwynda also lacks a column on Glass Bottles collected, and a significant portion of Wrappers column is "NA." Since MrTrashwheel has both the largest amount of data and the most thorough reporting across its columns, I believe it will be best to clean the data to fit a lot of the standards that MrTrashwheel provides before joining. 
 
-*Task 1*
-Starting by cleaning `mrtrashwheel` dataframe. Adding Identifying Trashwheel Column that can serve as a joining key for `bindrows()` function.
+**Task 1**
+
+Starting by cleaning `mrtrashwheel` dataframe. Adding Identifying Trashwheel Column that can serve as a joining key ahead of `bind_rows()` function.
 
 The note on Homes Powered state that each ton in trash week produces an avg. 500 kilowatts of power. To standardize this across all rows, weight variable will be multiplied by 500 and divided by the average home energy expenditure 30 kilowatts/day to get the average homes powered by each trashload.
 For the calculation, Homes Powered and Weight were renamed to avoid the parentheses and asterisks from interfering with the calculation being misread as operators.
@@ -113,13 +114,16 @@ For the calculation, Homes Powered and Weight were renamed to avoid the parenthe
 
 mrtrashwheel = mrtrashwheel |> 
   mutate(WheelID=c("MrTrashwheel"),.before=Dumpster) |> 
-  rename("Homes_Powered" = "Homes Powered*", "Wt_tons" = "Weight (tons)") |> 
+  rename("Homes_Powered" = "Homes Powered*", 
+         "Wt_tons" = "Weight (tons)",
+         "Volume_yd3" = "Volume (cubic yards)") |> 
   transform(Year = as.numeric(Year)) |> 
   mutate(Homes_Powered = ((Wt_tons*500)/30))
 
 ```
 
-*Task 2*
+**Task 2**
+
 These tidying functions are replicated on the Professor and Gwynda datasets, which both already had the Year Column as a numeric value. 
 
 ```{r remaining 2 tidy}
@@ -133,6 +137,27 @@ gwyndatrash = gwyndatrash |>
   mutate(WheelID=c("GwyndaTrashwheel"),.before=Dumpster) |> 
   rename("Homes_Powered" = "Homes Powered*", "Wt_tons" = "Weight (tons)") |> 
   mutate(Homes_Powered = ((Wt_tons*500)/30))
+
+```
+
+**Task 3**
+
+Ahead of binding, all three dataframes given cleaned snakecase names to standardize a few discontinuities where words are separated with periods and spaces across the three sheets. (Ex: Glass Bottles vs. Glass.Bottles)
+
+Binding the three cleaned dataframes together and overall stats summary. 
+
+```{r Binding}
+mrtrashwheel = mrtrashwheel |> 
+  janitor::clean_names()
+
+professortrash = professortrash |> 
+  janitor::clean_names()
+
+gwyndatrash = gwyndatrash |> 
+  janitor::clean_names()
+
+TotalTrashwheel_tidy =
+  bind_rows(mrtrashwheel, professortrash, gwyndatrash)
 
 ```
 
