@@ -114,9 +114,7 @@ For the calculation, Homes Powered and Weight were renamed to avoid the parenthe
 
 mrtrashwheel = mrtrashwheel |> 
   mutate(WheelID=c("MrTrashwheel"),.before=Dumpster) |> 
-  rename("Homes_Powered" = "Homes Powered*", 
-         "Wt_tons" = "Weight (tons)",
-         "Volume_yd3" = "Volume (cubic yards)") |> 
+  rename("Homes_Powered" = "Homes Powered*", "Wt_tons" = "Weight (tons)") |> 
   transform(Year = as.numeric(Year)) |> 
   mutate(Homes_Powered = ((Wt_tons*500)/30))
 
@@ -159,13 +157,30 @@ gwyndatrash = gwyndatrash |>
 TotalTrashwheel_tidy =
   bind_rows(mrtrashwheel, professortrash, gwyndatrash)
 
+summary(TotalTrashwheel_tidy)
+
+#Testing this to see how best to call inline R code when there are a few NA's
+sum(pull(TotalTrashwheel_tidy, "wt_tons"), na.rm = TRUE)
+
 ```
 
-"a similar process to import, clean, and organize the data for Professor Trash Wheel and Gwynnda, and combine these with the Mr. Trash Wheel dataset to produce a single tidy dataset. To keep track of which Trash Wheel is which, you may need to add an additional variable to all datasets before combining." 
+**Data Summary**
+
+The `TotalTrashwheel_tidy` compiled dataframe has `r nrow(TotalTrashwheel_tidy)` observations and `r ncol(TotalTrashwheel_tidy)` variables across three different trashwheel collection programs. A total of **`r sum(pull(TotalTrashwheel_tidy, "wt_tons"), na.rm = TRUE)`** tons of trash was collected from all three of these trashwheels combined. This much trash weight represents about `r sum(pull(TotalTrashwheel_tidy, "homes_powered"), na.rm = TRUE)` homes that were powered by this trash. When measured in volume, an average of cubic yards of trash was collected when considering all trashwheels.  
+
+Professor Trashwheel collected a total of  **`r sum(pull(professortrash, "wt_tons"), na.rm = TRUE)` tons** of trash across its activity period.
+
+```{r}
+GwyndaCig = gwyndatrash |> 
+  filter(month == "July", year == 2021)
+sum(pull(GwyndaCig,"cigarette_butts"), na.rm = TRUE)
+```
+
+Gwynda Trashwheel collected a total of **16300** cigarette butts from the recorded days within July 2021.
+
 
 
 ## Problem 3: 
-
 
 
 
