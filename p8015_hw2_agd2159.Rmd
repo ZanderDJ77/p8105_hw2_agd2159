@@ -166,18 +166,22 @@ sum(pull(TotalTrashwheel_tidy, "wt_tons"), na.rm = TRUE)
 
 **Data Summary**
 
-The `TotalTrashwheel_tidy` compiled dataframe has `r nrow(TotalTrashwheel_tidy)` observations and `r ncol(TotalTrashwheel_tidy)` variables across three different trashwheel collection programs. A total of **`r sum(pull(TotalTrashwheel_tidy, "wt_tons"), na.rm = TRUE)`** tons of trash was collected from all three of these trashwheels combined. This much trash weight represents about `r sum(pull(TotalTrashwheel_tidy, "homes_powered"), na.rm = TRUE)` homes that were powered by this trash. When measured in volume, an average of cubic yards of trash was collected when considering all trashwheels.  
+The `TotalTrashwheel_tidy` compiled dataframe has `r nrow(TotalTrashwheel_tidy)` observations and `r ncol(TotalTrashwheel_tidy)` variables across three different trashwheel collection programs. A total of **`r sum(pull(TotalTrashwheel_tidy, "wt_tons"), na.rm = TRUE)`** tons of trash was collected from all three of these trashwheels combined. This much trash weight represents about **`r sum(pull(TotalTrashwheel_tidy, "homes_powered"), na.rm = TRUE)`** homes that were powered by this trash. When measured in volume, an average of  **`r mean(pull(TotalTrashwheel_tidy, "volume_cubic_yards"), na.rm = TRUE)`** cubic yards of trash was collected when calculating across all trashwheels' datasets. 
 
-Professor Trashwheel collected a total of  **`r sum(pull(professortrash, "wt_tons"), na.rm = TRUE)` tons** of trash across its activity period.
+
+Requested in Problem 2: Professor Trashwheel collected a total of  **`r sum(pull(professortrash, "wt_tons"), na.rm = TRUE)` tons** of trash across its activity period (2017-2023). Average of **`r mean(pull(professortrash, "wt_tons"), na.rm = TRUE)` tons** daily in this study period.
+
+Similarly, Mr. Trashwheel collected a total of  **`r sum(pull(mrtrashwheel, "wt_tons"), na.rm = TRUE)` tons** of trash from 2014 - 2023. Average of **`r mean(pull(mrtrashwheel, "wt_tons"), na.rm = TRUE)` tons** daily across this period. Since it is much older, it has a larger overall tonnage collected, and a slightly higher average daily trash collection than Professor and Gwynda.
+
+Gwynda Trashwheel collected a total of  **`r sum(pull(gwyndatrash, "wt_tons"), na.rm = TRUE)` tons** of trash from 2021 - 2023. Average of **`r mean(pull(gwyndatrash, "wt_tons"), na.rm = TRUE)` tons** daily across this period.
 
 ```{r}
 GwyndaCig = gwyndatrash |> 
   filter(month == "July", year == 2021)
-sum(pull(GwyndaCig,"cigarette_butts"), na.rm = TRUE)
+sum(pull(GwyndaCig, "cigarette_butts"), na.rm = TRUE)
 ```
 
 Gwynda Trashwheel collected a total of **16300** cigarette butts from the recorded days within July 2021.
-
 
 
 ## Problem 3: 
