@@ -86,13 +86,21 @@ str(Df_538)
 
 
 ## Problem 2: Mr. Trashwheel Dataset
+The Trashwheel Dataset contains 6 separate sheets across the excel file, including pages for notes and discussing methodologies. Since this problem requires only 3 of the 4 trashwheel machines for data compilation, each trashwheel can be read in as a individualized tibble dataframe using the `sheet` and `range` arguments of `read_excel`. Calculations will then be further done on these dataframes before joining. 
 
-```{r}
-trashwheel_df = read_excel("Trashwheel_Data/202207 Trash Wheel Collection Data.xlsx")
+```{r, Importing Initial 3 Trash Datasets }
 
-trashwheel_df
+mrtrashwheel = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
+                             sheet = 1, range = "A2:N587")
+
+professortrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
+                             sheet = 2, range = "A2:M109")
+
+gywndatrash = read_excel("Trashwheel_Data/202309 Trash Wheel Collection Data.xlsx",
+                             sheet = 4, range = "A2:L159")
 
 ```
 
+Professortrash and Gywnda do not contain a variable column counting the "Sports Ball" category of trash collected, as Mr Trashwheel does. Gywnda also lacks a column on Glass Bottles collected, and a significant portion of Wrappers column is "NA"
 
 ##Problem 3: 
