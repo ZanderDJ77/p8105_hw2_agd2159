@@ -219,10 +219,21 @@ baseline_tidy = mci_baseline |>
     apoe4 = as.factor(apoe4)) |> 
   filter(!(age_at_onset <= current_age) | age_at_onset == ".")
 
+```
+
+```{r Operation for P3 Data Summary Questions, echo=FALSE}
+Women_subset = filter(baseline_tidy, sex == "female")
 
 ```
 
-It appears that **4 participants had MCI at baseline** and need to be excluded from the stats analysis to avoid bias.
+**MCI Baseline Data Summary**
+
+The `baseline_tidy` dataframe contains `r nrow(baseline_tidy)` recruited participants, and classifies `r ncol(baseline_tidy)` variables. It appears that **4 participants of the original 483 had MCI at baseline** and need to be excluded from the stats analysis to avoid bias.
+
+The average age of participants at baseline was **`r mean(pull(baseline_tidy, current_age))`** years old. Of these baseline participants, **93** develop MCI during the study based on `age_at_onset` data recorded.
+
+**`r nrow(Women_subset)`** of the baseline participants were women, and **63** women participants were APOE4 Carriers. 63/210 = 30% of women, 63/479 = 13% of total cohort.
+
 
 **Task 2** 
 
@@ -235,7 +246,6 @@ amyloid_tidy = mci_amyloid |>
     names_to = "visit_years",
     values_to = "amyloid_ratio") |> 
   transform(amyloid_ratio = as.numeric(amyloid_ratio))
-
 
 ```
 
