@@ -200,11 +200,13 @@ mci_amyloid = read_csv("MCI_Data/mci_amyloid.csv", skip = 1) |>
 
 Initial column specification information using the `spec()` function indicates that a number of the column variables are coded incorrectly as either characters or numerics, and need to be swapped. First portion of coding will be restandardizing these labels to correct factors across both datasets to prepare for merger.
 
-Baseline Cleaning Below:
+**Task 1**
+
+Baseline CSV Cleaning Below, with specific function at end to filter out participants that had MCI at Baseline:
 ```{r cleaning baseline}
 
-baseline_new = mci_baseline |> 
-  rename("study_id" = "id") |> 
+baseline_tidy = mci_baseline |> 
+  rename("study_id" = "id") |>
   mutate(sex = case_match(
     sex,
     1 ~ "male",
@@ -214,7 +216,26 @@ baseline_new = mci_baseline |>
     apoe4,
     1 ~ "carrier",
     0 ~ "non-carrier"),
-    apoe4 = as.factor(apoe4))
+    apoe4 = as.factor(apoe4)) |> 
+  filter(!(age_at_onset <= current_age) | age_at_onset == ".")
+
+
+```
+
+It appears that **4 participants had MCI at baseline** and need to be excluded from the stats analysis to avoid bias.
+
+**Task 2** 
+
+Beginning to Clean Amyloid Biomarker Time Series Dataframe:
+```{r}
+
+amyloid_tidy = mci_amyloid |> 
+  pivot_longer(
+    baseline:time_8,
+    names_to = "visit_years",
+    values_to = "amyloid_ratio") |> 
+  transform(amyloid_ratio = as.numeric(amyloid_ratio))
+
 
 ```
 
